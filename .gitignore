@@ -4,3 +4,8 @@
 *.ptx
 *.cubin
 *.fatbin
+
+__pycache__/*
+venv/
+data_files/
+data.py
