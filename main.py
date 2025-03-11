@@ -14,13 +14,12 @@ def update_heatmap():
     # get updated heatmap
     gdf = export_heatmap(need_export=False)
     
-    # draw initial heatmap
-    Heatmap.draw_heatmap(gdf)
     
     # get the user input address from Tkinter label
     address = entry.get()
     if not address:
-        messagebox.showerror("Error", "Please enter an address")
+        # draw initial heatmap if no address is present
+        Heatmap.draw_heatmap(gdf)
         return
     
     # convert user address into coordinates
@@ -30,9 +29,7 @@ def update_heatmap():
     # update the heatmap if the location exists
     if location:
         
-        # retrieve inspection data as a frame and parse for the zipcode based on the coords
         # returns a list of matchine zipcodes
-        df = pd.read_csv(Config.inspection_data)
         zipcode = df[(df['Latitude'].round(2) == round(location.latitude, 2)) & 
                      (df['Longitude'].round(2) == round(location.longitude, 2))]['ZIPCODE'].values
 
@@ -64,6 +61,9 @@ def update_canvas(fig):
     canvas = FigureCanvasTkAgg(fig, master=root)
     canvas.draw()
     canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+    
+def close_window():
+    root.destroy()
     
 # base class for heatmaps
 class Heatmap:
@@ -100,6 +100,7 @@ class Heatmap_Zoomed(Heatmap):
 
         # update window canvas element
         update_canvas(fig)
+
     
 
 # create the main window
@@ -112,8 +113,14 @@ tk.Label(root, text="Enter Address:").pack(pady=5)
 entry = tk.Entry(root, width=50)
 entry.pack(pady=5)
 
+close_button = tk.Button(root, text="exit", command=close_window)
+close_button.pack()
+
 # entry button to get user input
 tk.Button(root, text="Get Result", command=update_heatmap).pack(pady=5)
+
+# read inspection data
+df = pd.read_csv(Config.inspection_data)
 
 # run the GUI loop
 root.mainloop()

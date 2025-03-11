@@ -9,3 +9,4 @@ __pycache__/*
 venv/
 data_files/
 data.py
+.vscode
