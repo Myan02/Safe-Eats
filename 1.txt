@@ -1,0 +1,3 @@
+get-ExecutionPolicy
+set-ExecutionPolicy Unrestricted -Scope Process
+flasktest\venv\Scripts\activate
