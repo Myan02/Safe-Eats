@@ -4,3 +4,10 @@
 *.ptx
 *.cubin
 *.fatbin
+
+config.py
+test.py
+/__pycache__
+/flasktest/__pycache__
+/flasktest/app/__pycache__
+/flasktest/venv/pyvenv.config
