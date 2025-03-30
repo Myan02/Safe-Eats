@@ -1,0 +1,4 @@
+get-ExecutionPolicy
+set-ExecutionPolicy Unrestricted -Scope Process
+venv\Scripts\activate
+160 Convent Ave, New York, NY 10031

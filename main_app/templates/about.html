@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+    <div class="about-container">
+        <h2>About Safe-Eats</h2>
+        
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Application Purpose</h5>
+                <p class="card-text">
+                    This application helps you find restaurants near a specific address. 
+                    It uses geocoding to convert addresses to coordinates and calculates 
+                    distances to restaurants in our database.
+                </p>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">How It Works</h5>
+                <ol>
+                    <li>Yes</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Data Sources</h5>
+                <p>
+                    Our database is regularly updated from official sources.
+                    All coordinates are verified for accuracy. :D
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
