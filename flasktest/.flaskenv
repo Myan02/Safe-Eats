@@ -1,2 +1,0 @@
-FLASK_APP=flasktest.py
-FLASK_DEBUG=1
