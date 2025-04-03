@@ -11,3 +11,5 @@ test.py
 /__pycache__
 /app/__pycache__
 /venv
+
+/app/static/data_files/nyc_restaurant_inspections_march_2025.csv
