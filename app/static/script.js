@@ -1,5 +1,4 @@
-// MapBox Access Token
-mapboxgl.accessToken = "";  // Replace this with your own!
+mapboxgl.accessToken = "pk.eyJ1IjoibWJhYnVyeWFuIiwiYSI6ImNtOTI3dDNoaDAyeXAya3B5NWYyeDM2dGsifQ.NxMK9ZDI0Aq7vT-28X42Dg";
 
 // Initialize Mapbox map
 var map = new mapboxgl.Map({
@@ -50,7 +49,7 @@ map.on('load', () => {
 
 async function updateZipcodes(){
     try {
-        const response = await fetch("http://127.0.0.1:5000/inspections/get_average_grades");
+        const response = await fetch("/inspections/get_average_grades");
         const zipcode_entries = await response.json();
 
         let matchExpression = ["match", ["get", "modzcta"]]; 

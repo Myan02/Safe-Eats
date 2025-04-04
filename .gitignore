@@ -5,6 +5,7 @@
 *.cubin
 *.fatbin
 *.vscode
+*.env
 
 config.py
 test.py
