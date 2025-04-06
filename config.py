@@ -1,10 +1,12 @@
 import os
 from dotenv import load_dotenv
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-load_dotenv(os.path.join(basedir, '.env'))
+load_dotenv()
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key-please-change'
-    GEOCODE_USER_AGENT = "address_search_app_v1"
-    GEOCODE_TIMEOUT = 10
+    """Base configuration."""
+    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
+    MAPBOX_TOKEN = os.getenv('MAPBOX_TOKEN')
+    
+    if not MAPBOX_TOKEN or not MAPBOX_TOKEN.startswith('pk.ey'):
+        raise ValueError("Invalid Mapbox token configuration")

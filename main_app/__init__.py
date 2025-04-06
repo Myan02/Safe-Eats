@@ -1,11 +1,27 @@
 from flask import Flask
-from config import Config
+from flask_cors import CORS
+import os
+from dotenv import load_dotenv
+import logging
 
-def create_app(config_class=Config):
+load_dotenv()
+
+def create_app():
+    """Initialize the Flask application."""
     app = Flask(__name__)
-    app.config.from_object(config_class)
-
-    from main_app.routes import bp as main_bp
-    app.register_blueprint(main_bp)
-
+    app.config.from_object('config.Config')
+    
+    # Configure logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s'
+    )
+    
+    # Enable CORS
+    CORS(app)
+    
+    # Register blueprints
+    from . import routes
+    app.register_blueprint(routes.bp)
+    
     return app

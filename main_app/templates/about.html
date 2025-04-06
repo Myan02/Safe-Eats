@@ -1,39 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %}About{% endblock %}
-
 {% block content %}
-    <div class="about-container">
-        <h2>About Safe-Eats</h2>
-        
-        <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title">Application Purpose</h5>
-                <p class="card-text">
-                    This application helps you find restaurants near a specific address. 
-                    It uses geocoding to convert addresses to coordinates and calculates 
-                    distances to restaurants in our database.
-                </p>
-            </div>
-        </div>
-
-        <div class="card mt-3">
-            <div class="card-body">
-                <h5 class="card-title">How It Works</h5>
-                <ol>
-                    <li>Yes</li>
-                </ol>
-            </div>
-        </div>
-
-        <div class="card mt-3">
-            <div class="card-body">
-                <h5 class="card-title">Data Sources</h5>
-                <p>
-                    Our database is regularly updated from official sources.
-                    All coordinates are verified for accuracy. :D
-                </p>
-            </div>
+<div class="container mt-4">
+    <h1>About Safe-Eats</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <p class="lead">Find the best restaurants near any location in New York City</p>
+            
+            <h3>How It Works</h3>
+            <ol>
+                <li>Enter any NYC address in the search box</li>
+                <li>We'll pinpoint the location on the map</li>
+                <li>Discover the 10 nearest restaurants with inspection grades</li>
+            </ol>
+            
+            <h3>Our Data</h3>
+            <p>We use the latest restaurant inspection data from the NYC Department of Health.</p>
+            
+            <h3>Why It Matters</h3>
+            <p>Restaurant grades help you make informed dining choices based on cleanliness and food safety standards.</p>
         </div>
     </div>
+</div>
 {% endblock %}

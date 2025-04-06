@@ -1,0 +1,78 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-fluid {
+    height: 100vh;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.results-container {
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.grade-A {
+    color: #28a745;
+    font-weight: bold;
+    padding: 0.2em 0.5em;
+    background-color: #f8f9fa;
+    border-radius: 3px;
+}
+
+.grade-B {
+    color: #fd7e14;
+    font-weight: bold;
+}
+
+.grade-C {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.card {
+    border-left: 3px solid #0d6efd;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.mapboxgl-popup-content {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.mapboxgl-popup-content h6 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.alert {
+    margin-top: 1rem;
+}
+
+/* About page specific styles */
+.about-content {
+    line-height: 1.6;
+}
+
+.about-content h3 {
+    margin-top: 1.5rem;
+    color: #2c3e50;
+}
+
+.about-content ol, .about-content ul {
+    padding-left: 1.5rem;}

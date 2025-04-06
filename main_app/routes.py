@@ -1,100 +1,132 @@
-from flask import Blueprint, render_template, request, flash
-import os
+from flask import Blueprint, render_template, request, jsonify, current_app
 import pandas as pd
-from main_app.utils.data_cleaner import DataCleaner
-from main_app.utils.geocoder import Geocoder
+from geopy.distance import geodesic
+from geopy.geocoders import Nominatim
+import os
+import logging
+import numpy as np
 
-# Initialize Blueprint
 bp = Blueprint('main', __name__)
 
-def format_zipcode(zipcode):
-    """Format zip code to handle decimals and NaN values"""
+def get_data_path():
+    """Get the absolute path to the data file."""
+    return os.path.join(current_app.root_path, '../data/restaurant_data.csv')
+
+def load_data():
+    """Load and clean restaurant data with proper type handling."""
+    data_path = get_data_path()
+    if not os.path.exists(data_path):
+        raise FileNotFoundError(f"Data file not found at {data_path}")
+    
     try:
-        if pd.isna(zipcode):
-            return ""
-        zip_str = str(zipcode).strip()
-        if '.' in zip_str:
-            return zip_str.split('.')[0]  # Remove decimal portion
-        return zip_str.zfill(5)  # Ensure 5 digits
-    except:
-        return ""
-
-def format_address(building, street, boro, zipcode):
-    """Format address components"""
-    parts = []
-    if building and str(building).lower() != 'nan':
-        parts.append(str(building).strip())
-    if street and str(street).lower() != 'nan':
-        parts.append(str(street).strip())
-    if boro and str(boro).lower() != 'nan':
-        parts.append(str(boro).strip())
+        # Load with explicit dtype to prevent type issues
+        df = pd.read_csv(
+            data_path,
+            dtype={
+                'CAMIS': str,
+                'ZIPCODE': str,
+                'PHONE': str,
+                'SCORE': float,
+                'Latitude': float,
+                'Longitude': float
+            },
+            keep_default_na=False,
+            na_values=['', 'NA', 'N/A', 'NaN', 'null']
+        )
+        
+        # Convert empty strings to None
+        df = df.replace(r'^\s*$', None, regex=True)
+        
+        # Clean data
+        df = df.dropna(subset=['Latitude', 'Longitude', 'DBA'])
+        df = df[
+            (df['Latitude'].between(40.4, 41.0)) & 
+            (df['Longitude'].between(-74.5, -73.5))
+        ]
+        
+        return df
     
-    formatted_zip = format_zipcode(zipcode)
-    if formatted_zip:
-        parts.append(formatted_zip)
-    
-    return ', '.join(parts) if parts else 'Address not available'
+    except Exception as e:
+        logging.error(f"Error loading data: {str(e)}")
+        raise
 
-@bp.route('/', methods=['GET', 'POST'])
+def geocode_address(address):
+    """Convert address to coordinates with error handling."""
+    geolocator = Nominatim(user_agent="nyc_restaurant_locator")
+    try:
+        location = geolocator.geocode(f"{address}, New York, NY", timeout=10)
+        if location:
+            return location.latitude, location.longitude
+        return None, None
+    except Exception as e:
+        logging.error(f"Geocoding error: {str(e)}")
+        return None, None
+
+def clean_for_json(value):
+    """Convert pandas/numpy types to JSON-compatible types."""
+    if pd.isna(value) or value is None:
+        return None
+    if isinstance(value, (np.integer, np.floating)):
+        return float(value)
+    if isinstance(value, (pd.Timestamp, np.datetime64)):
+        return value.isoformat()
+    return value
+
+@bp.route('/')
 def index():
-    results = []
-    search_params = {
-        'address': '',
-        'radius': 1.0,
-        'limit': 10
-    }
-    
-    current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    raw_path = os.path.join(current_dir, 'data/raw_locations.csv')
-    clean_path = os.path.join(current_dir, 'data/locations_cleaned.csv')
-    
-    if request.method == 'POST':
-        try:
-            search_params = {
-                'address': request.form.get('address', '').strip(),
-                'radius': float(request.form.get('radius', 1)),
-                'limit': int(request.form.get('limit', 10)) or None
-            }
-            
-            cleaner = DataCleaner(raw_path, clean_path)
-            clean_df = cleaner.clean_data()
-            
-            geocoder = Geocoder(clean_path)
-            
-            if not search_params['address']:
-                flash("Please enter an address", 'error')
-            else:
-                raw_results = geocoder.find_nearby(
-                    search_params['address'],
-                    search_params['radius'],
-                    search_params['limit']
-                )
-                results = [{
-                    'dba': r['dba'],
-                    'formatted_address': format_address(
-                        r['building'], 
-                        r['street'], 
-                        r['boro'], 
-                        r['zipcode']
-                    ),
-                    'distance': r['distance']
-                } for r in raw_results]
-                
-                if not results:
-                    flash("No restaurants found nearby", 'info')
-                    
-        except ValueError as e:
-            flash(f"Invalid input: {str(e)}", 'error')
-        except Exception as e:
-            flash(f"Search error: {str(e)}", 'error')
-    
-    return render_template(
-        'index.html', 
-        results=results,
-        search_params=search_params,
-        active_page='home'
-    )
+    """Render main search page."""
+    return render_template('index.html', mapbox_token=current_app.config['MAPBOX_TOKEN'])
 
 @bp.route('/about')
 def about():
-    return render_template('about.html', active_page='about')
+    """Render about page."""
+    return render_template('about.html')
+
+@bp.route('/search', methods=['POST'])
+def search():
+    """Handle search requests with comprehensive error handling."""
+    try:
+        if not request.is_json:
+            return jsonify({'error': 'Content-Type must be application/json'}), 400
+            
+        data = request.get_json()
+        address = data.get('address', '').strip()
+        
+        if not address:
+            return jsonify({'error': 'Address cannot be empty'}), 400
+        
+        # Geocode address
+        lat, lon = geocode_address(address)
+        if not lat or not lon:
+            return jsonify({'error': 'Could not locate address'}), 400
+        
+        # Find nearby restaurants
+        df = load_data()
+        df['distance'] = df.apply(
+            lambda row: geodesic((lat, lon), (row['Latitude'], row['Longitude'])).miles,
+            axis=1
+        )
+        nearby = df[df['distance'] <= 1].sort_values('distance').head(10)
+        
+        # Prepare JSON-compatible results
+        results = []
+        for _, row in nearby.iterrows():
+            clean_row = {
+                col: clean_for_json(val) 
+                for col, val in row.items()
+                if col in [
+                    'DBA', 'BORO', 'BUILDING', 'STREET', 'ZIPCODE',
+                    'PHONE', 'CUISINE DESCRIPTION', 'GRADE', 'SCORE',
+                    'Latitude', 'Longitude', 'distance'
+                ]
+            }
+            results.append(clean_row)
+        
+        return jsonify({
+            'search_location': {'lat': lat, 'lon': lon, 'label': address},
+            'restaurants': results
+        })
+        
+    except Exception as e:
+        logging.exception("Search error")
+        return jsonify({'error': 'Search failed'}), 500
