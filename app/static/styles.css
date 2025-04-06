@@ -1,10 +1,11 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
+    overflow-x: hidden;
 }
 #map {
     position: absolute;
-    height: 800px;
+    height: 100%;
     width: 100%;
     margin: auto;
     border-radius: 10px;

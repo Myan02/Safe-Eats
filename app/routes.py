@@ -11,9 +11,12 @@ def index():
 
 @app.route('/inspections/<data>')
 def get_data(data):
-   
-    return jsonify(inspection_data.get_average_grades())
-    
+    if data == 'unique':
+        return jsonify(inspection_data.get_unique_restaurants())
+    elif data == 'average':
+        return jsonify(inspection_data.get_average_grades())
+
+
 @app.route('/zipcode_borders/<filename>')
 def get_zipcode_borders(filename):
     return send_from_directory('static/data_files', filename)

@@ -28,7 +28,6 @@ AVERAGE GRADE TYPE INFO:
 import os
 import pandas as pd
 import geopandas as gpd
-from sodapy import Socrata
 from matplotlib import colors
 
 class Inspections():
@@ -40,6 +39,7 @@ class Inspections():
         self.inspections_df = self.init_data_using_csv()
         self.zipcode_borders_gdf = self.init_borders_using_geojson()
         self.average_grades_per_zipcode_df = self.init_average_grades()
+        self.unique_restaurants_df = self.init_unique_restaurants()
     
     
     # default init, data is from March 2025
@@ -117,11 +117,13 @@ class Inspections():
             print(f'something went wrong trying to read geojson file: \n {e}')
         
         # rename each column to be lowercase, matching the other df columns in the app
-        results = results.rename(columns={'MODZCTA': 'modzcta',
+        results = results.rename(columns={'postalCode': 'modzcta',
                                           'LABEL': 'label',
                                           'ZCTA': 'zcta',
                                           'POP_EST': 'pop_est',
                                           'GEOMETRY': 'geometry'})
+        
+
             
         # drop the random row that has zipcode 99999
         results = results[results['modzcta'] < str(99999)]
@@ -205,6 +207,27 @@ class Inspections():
         
         return results
     
+    # default init, create a dataframe of unique restaurants
+    def init_unique_restaurants(self):
+        
+        # check to make sure that the main inspection results exist
+        if self.inspections_df is None:
+            raise Exception('Trying to create average grades dataframe but inspections doesn\'t exist...')
+        
+        # create a copy of the dataframe's important cols for this query
+        results = self.inspections_df[['dba', 'zipcode', 'cuisine description', 'inspection date', 'grade', 'latitude', 'longitude']].copy()
+        
+        # sort the values by inspection grade to get the most recent entries
+        results = results.sort_values(by='inspection date', ascending=False)
+        
+        # get a row of each unique restaurant
+        results = results.drop_duplicates(subset=['dba'], keep='first')
+        
+        # sort the rows by the name of the restaurant
+        results = results.sort_values(by='dba', ascending=True)
+        
+        return results
+    
     
     # convert any dataframe to a dictionary, useful for displaying json data 
     @staticmethod
@@ -223,30 +246,7 @@ class Inspections():
     def get_average_grades(self) -> dict:
         return self.convert_df_to_records(self.average_grades_per_zipcode_df)
 
-
-
-
-
-
-
-
-
-    
-    
-#     # returns one row for each restaurant, useful for displaying markers on each restaurant
-#     def get_unique_restaurant_inspections(self):
-#         # get all uniqye restaurants
-#         unique_restaurants = self.results_df.drop_duplicates(subset=['dba'], keep='first')
-        
-#         # sort values in ascending order of restaurant name
-#         unique_restaurants_sorted = unique_restaurants.sort_values(by='dba')
-        
-#         # fill in blank values so that javascript doesn't freak out
-#         unique_restaurants_sorted_and_filled = unique_restaurants_sorted.fillna('empty')
-        
-#         return unique_restaurants_sorted_and_filled.to_dict(orient='records')
-    
-    
-
-
+    # return all unique restaurants as dictionary records
+    def get_unique_restaurants(self) -> dict:
+        return self.convert_df_to_records(self.unique_restaurants_df)
     
