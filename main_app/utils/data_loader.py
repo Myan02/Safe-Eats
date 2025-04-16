@@ -60,15 +60,18 @@ class DataService:
 
     def get_nearby_restaurants(self, lat, lon, max_distance=1):
         """Find restaurants within max_distance miles."""
+        # Get initial nearby restaurants
         if self.spatial_index:
-            radius_deg = max_distance / 69
+            radius_deg = max_distance / 69  # Approximate degrees per mile
             idx = self.spatial_index.query_ball_point([lat, lon], radius_deg)
             nearby = self.data.iloc[idx].copy()
         else:
             nearby = self.data.copy()
         
-        nearby['distance'] = nearby.apply(
-            lambda row: geodesic((lat, lon), (row['Latitude'], row['Longitude'])).miles,
-            axis=1
-        )
-        return nearby[nearby['distance'] <= max_distance]
+        nearby['distance'] = [
+            geodesic((lat, lon), (row['Latitude'], row['Longitude'])).miles
+             for _, row in nearby.iterrows()
+         ]
+        
+        # Filter and return
+        return nearby[nearby['distance'] <= max_distance].copy()
