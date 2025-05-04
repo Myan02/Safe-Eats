@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     let restaurantMarkers = [];
     let currentPopup = null;
+    let searchMarker = null;
 
     // Cleanup handler for modals
     document.addEventListener('hidden.bs.modal', function() {
@@ -52,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function handleSearch(address) {
+        
         const resultsDiv = document.getElementById('results');
         const errorDiv = document.getElementById('searchError');
         
@@ -241,6 +243,12 @@ document.addEventListener('DOMContentLoaded', function() {
         restaurantMarkers = [];
         currentPopup = null;
         
+        // Clear previous search marker (if exists)
+        if (searchMarker) {
+            searchMarker.remove();
+            searchMarker = null;
+        }
+        
         const currentRestaurants = getCurrentPageRestaurants();
         
         // Create bounds
@@ -249,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add search location marker (red) if available
         if (restaurantData.searchLocation) {
             try {
-                new mapboxgl.Marker({ color: '#FF0000' })
+                searchMarker = new mapboxgl.Marker({ color: '#FF0000' })
                     .setLngLat([
                         restaurantData.searchLocation.lon, 
                         restaurantData.searchLocation.lat
