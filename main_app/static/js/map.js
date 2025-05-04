@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <h5 class="card-title">${restaurant.DBA || 'Unknown'}</h5>
                         <p class="card-text">
                             <small class="text-muted">${address}</small><br>
+                            <span class="text-muted small">${restaurant.CUISINE_DESCRIPTION || 'Cuisine not specified'}</span><br>
                             ${restaurant.distance ? `<span>${restaurant.distance.toFixed(2)} miles</span>` : ''}
                             ${restaurant.GRADE ? `<span class="badge ${gradeClass} ms-2">${restaurant.GRADE}</span>` : ''}
                         </p>
@@ -292,6 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="map-popup">
                         <h6>${r.DBA || 'Restaurant'}</h6>
                         <p class="mb-1">${address}</p>
+                        <p class="mb-1">Cuisine: ${r.CUISINE_DESCRIPTION || 'Not specified'}</p>
                         ${r.PHONE ? `<p class="mb-1">Phone: ${r.PHONE}</p>` : ''}
                         <p class="mb-1">Distance: ${r.distance ? r.distance.toFixed(2) : 'N/A'} miles</p>
                         <p class="mb-1">Grade: <span class="${gradeClass}">${r.GRADE || 'N/A'}</span></p>
