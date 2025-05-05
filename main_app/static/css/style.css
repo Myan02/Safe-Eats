@@ -9,6 +9,8 @@ body, html {
     height: 100vh;
 }
 
+  
+
 /* Map Container */
 #map {
     height: 100%;
@@ -289,3 +291,59 @@ body.modal-open {
     background-color: #fff3cd;
     border-color: #ffeeba;
 }
+
+
+/* Data Analsyis */
+.statistics {
+    background-color: #2563eb;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.rounded-custom {
+    border-radius: 10px;
+}
+
+.chart-row-single {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.chart-box {
+    width: 100%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 2rem;
+}
+
+.chart-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.chart-container-two {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.responsive-plotly {
+    flex: 1 1 48%;
+}
+
+.responsive-plotly > div {
+    width: 100%;
+    height: auto;
+}
+
+

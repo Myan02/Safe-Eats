@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Full-width blue section -->
+<div class="statistics text-white p-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">NYC Restaurant Inspection Analysis</h1>
+        <p class="lead">
+            Explore health inspection violations across New York City restaurants.<br>
+            Make informed dining decisions with our data analysis.
+        </p>
+    </div>
+
+    <div class="mt-5">
+        <div class="p-3 rounded-custom bg-light">
+            <h3 class="h5 mb-4 text-black fw-bold">Key Statistics</h3>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="p-3 rounded bg-primary bg-opacity-10">
+                        <small class="text-primary">Total Inspections</small>
+                        <h4 class="fw-bold text-black">{{ all_inspections }}</h4>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded bg-success bg-opacity-10">
+                        <small class="text-success">Critical Violations</small>
+                        <h4 class="fw-bold text-black">{{ critical }}</h4>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded bg-warning bg-opacity-25">
+                        <small class="text-warning">Avg. Score</small>
+                        <h4 class="fw-bold text-black">{{avg_score}}</h4>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded bg-danger bg-opacity-25">
+                        <small class="text-danger">Worst Borough</small>
+                        <h4 class="fw-bold text-black">{{bad_borough}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+</div>
+
+<!-- Main content inside container -->
+<div class="container">
+    <h2 style="margin-top: 3rem; margin-bottom: 3rem; font-weight: bold; text-align: left;">NYC Restaurant Inspection Overview</h2>
+</div>
+
+<div class="chart-row-single">
+    <div class="chart-box">
+        <h3 class="chart-title">Inspection Grades Distribution</h3>
+        <div class="chart-container-two">
+            <div class="responsive-plotly">
+                {{ grade_pie|safe }}
+            </div>
+            <div class="responsive-plotly">
+                {{ grade_bar|safe }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="chart-row-single">
+    <div class="chart-box">
+        <h3 class="chart-title">Boroughs Comparison</h3>
+        <div class="chart-container-two">
+            <div class="responsive-plotly">
+                {{ boro_bar|safe }}
+            </div>
+        </div>
+        <div class="chart-container-two">
+            <div class="responsive-plotly">
+                {{ avg_score_boro|safe }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="chart-row-single">
+    <div class="chart-box">
+        <h3 class="chart-title">Inspection Grades Distribution across all Cuisines</h3>
+        <div class="chart-container-two">
+            <div class="responsive-plotly">
+                {{ cuisines_bar|safe }}
+            </div>
+            <div class="responsive-plotly">
+                {{ cuisines_percentage|safe }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="chart-row-single">
+    <div class="chart-box">
+        <h3 class="chart-title">Amount of Violations by Cuisine Type</h3>
+        <div class="chart-container-two">
+            <div class="responsive-plotly">
+                {{ violations_per_cuisine|safe}}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="chart-row-single">
+    <div class="chart-box">
+        <h3 class="chart-title">Most Recent Amount of Violations by Cuisine Type</h3>
+        <div class="chart-container-two">
+            <div class="responsive-plotly">
+                {{ latest_violations_per_cuisine|safe}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="chart-row-single">
+    <div class="chart-box">
+        <h3 class="chart-title">Average Violations by Cuisine Type</h3>
+        <div class="chart-container-two">
+            <div class="responsive-plotly">
+                {{ avg_violations_by_cuisine_and_borough|safe}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="chart-row-single">
+    <div class="chart-box">
+        <h3 class="chart-title">Violation Codes</h3>
+        <div class="chart-container-two">
+            <div class="responsive-plotly">
+                {{ violation_code|safe}}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
