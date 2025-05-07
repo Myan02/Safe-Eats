@@ -23,9 +23,17 @@
         
         <!-- Right Column - Map -->
         <div class="col-md-8 p-0">
-            <div id="map" class="h-100"></div>
+            <div id="map" class="h-100">
+            <div class="dropdown" id="map-select">
+                <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Map Options
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Standard</a></li>
+                    <li><a class="dropdown-item" href="#">Heatmap</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
 </div>
 {% endblock %}
 
