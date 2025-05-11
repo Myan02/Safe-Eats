@@ -8,6 +8,7 @@
 venv/
 *.pyc
 __pycache__/
+.vscode
 *.swp
 .DS_Store
 data/

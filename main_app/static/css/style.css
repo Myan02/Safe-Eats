@@ -302,3 +302,62 @@ body.modal-open {
   margin: 36px;
   height: 64px;
 }
+
+/* Heatmap Popup */
+#heatmap-main-popup {
+  text-align: center;
+}
+
+#heatmap-zipcode {
+  font-size: 2.2em;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+#heatmap-average {
+  font-size: 2em;
+  line-height: 1.3;
+  margin-bottom: 0px;
+}
+
+/* Legend */
+#map-legend {
+  height: 86px;
+  width: 220px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 99999;
+  margin-top: 10px;
+  margin-right: 59px;
+  padding: 0px;
+  background: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+}
+
+#legend-gradient {
+  height: 24px;
+  width: 200px;
+  background: #0000ff;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 255, 1) 0%,
+    rgba(0, 255, 0, 1) 75%,
+    rgba(255, 255, 0, 1) 100%
+  );
+}
+
+.legend-key {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  align-items: center;
+  margin: 3px 0px 3px 0px;
+}
+
+.legend-key h6 {
+  margin: 0;
+  padding: 0;
+}

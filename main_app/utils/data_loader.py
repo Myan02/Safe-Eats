@@ -106,6 +106,7 @@ class DataService:
     
     def _get_unique(self, df):
         """Get the most recent record of each restaurant"""
+        df = df[['DBA', 'BORO', 'ZIPCODE', 'CUISINE DESCRIPTION', 'INSPECTION DATE', 'GRADE', 'Latitude', 'Longitude']]
         df = df.sort_values(by='INSPECTION DATE', ascending=False)
         df = df.drop_duplicates(subset=['DBA'], keep='first')
         return df.sort_values(by='DBA', ascending=True)
@@ -119,7 +120,8 @@ class DataService:
         }
         
         # Get means per zip
-        df = df[(df['GRADE'] == 'A') | (df['GRADE'] == 'B') | (df['GRADE'] == 'C')]
+        df['GRADE'] = df['GRADE'].str.upper()
+        df = df[df['GRADE'].isin(['A', 'B', 'C'])]
         means_df = df[['ZIPCODE', 'GRADE']].copy()
         means_df['MEAN'] = means_df['GRADE'].map(grade_to_value)
         means_df = means_df.groupby('ZIPCODE')['MEAN'].mean().reset_index()

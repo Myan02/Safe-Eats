@@ -15,26 +15,31 @@ def about():
     """Render the about page."""
     return render_template('about.html')
 
-@bp.route('/search', methods=['POST'])
+@bp.route('/search', methods=['GET', 'POST'])
 def search():
-    """Handle restaurant search requests."""
-    if not request.is_json:
-        return jsonify({'error': 'Content-Type must be application/json'}), 400
-        
-    data = request.get_json()
-    address = data.get('address', '').strip()
     
-    try:
-        response_data = search_restaurants(address)
-        return current_app.response_class(
-            response=current_app.json.dumps(response_data),
-            mimetype='application/json'
-        )
-    except ValueError as e:
-        return jsonify({'error': str(e)}), 400
-    except Exception as e:
-        logging.error(f"Search error: {str(e)}")
-        return jsonify({'error': 'Search failed'}), 500
+    if request.method == 'POST':
+        """Handle restaurant search requests."""
+        if not request.is_json:
+            return jsonify({'error': 'Content-Type must be application/json'}), 400
+            
+        data = request.get_json()
+        address = data.get('address', '').strip()
+        
+        try:
+            response_data = search_restaurants(address)
+            return current_app.response_class(
+                response=current_app.json.dumps(response_data),
+                mimetype='application/json'
+            )
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 400
+        except Exception as e:
+            logging.error(f"Search error: {str(e)}")
+            return jsonify({'error': 'Search failed'}), 500
+    
+    elif request.method == 'GET':
+        return render_template('search.html', mapbox_token=current_app.config['MAPBOX_TOKEN'])
     
 @bp.route('/fetch_geoms', methods=['POST', 'GET'])
 def fetch_geoms():
