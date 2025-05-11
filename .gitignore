@@ -13,3 +13,6 @@ __pycache__/
 .DS_Store
 data/
 main_app/__pycache__/
+Dockerfile
+boot.sh
+.dockerignore
