@@ -1,48 +1,36 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="container-fluid h-100">
-    <div class="row h-100">
-        <!-- Left Column - Search and Results -->
-        <div class="col-md-4 p-3 bg-light">
-            <h2 class="mb-4">Find Nearby Restaurants</h2>
-            
-            <form id="searchForm" class="mb-4">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="searchAddress" 
-                           placeholder="Enter NYC address (e.g. 160 Convent Ave)" required>
-                    <button class="btn btn-primary" type="submit">Search</button>
-                </div>
-                <div id="searchError" class="text-danger mt-2"></div>
-            </form>
-            
-            <div id="results" class="results-container">
-                <p class="text-muted">Enter an NYC address to find nearby restaurants</p>
-            </div>
-        </div>
-        
-        <!-- Right Column - Map -->
-        <div class="col-md-8 p-0">
-            <div id="map" class="h-100"></div>
-        </div>
-    </div>
+{% extends "base.html" %} {% block content %}
+<div id="map">
+  <div id="map-legend">
+    <div class="legend-key"><h6>A</h6><h6>B</h6><h6>C</h6></div>
+    <div id="legend-gradient"></div>
+    <div class="legend-key"><h6>1.0</h6><h6>2.0</h6><h6>3.0</h6></div>
+  </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %} {% block scripts %}
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+<link
+  href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css"
+  rel="stylesheet"
+/>
+<script
+  type="module"
+  src="{{ url_for('static', filename='js/heat_map.js') }}"
+></script>
+<script
+  type="module"
+  src="{{ url_for('static', filename='js/utils.js') }}"
+></script>
 <script>
-    const mapboxToken = "{{ mapbox_token }}";
-    if (mapboxToken && mapboxToken.startsWith('pk.ey')) {
-        mapboxgl.accessToken = mapboxToken;
-    } else {
-        document.getElementById('map').innerHTML = `
+  const mapboxToken = "{{ mapbox_token }}";
+  if (mapboxToken && mapboxToken.startsWith("pk.ey")) {
+    mapboxgl.accessToken = mapboxToken;
+  } else {
+    document.getElementById("map").innerHTML = `
             <div class="alert alert-danger m-3">
                 Invalid Mapbox token. Map cannot be loaded.
             </div>
         `;
-    }
+  }
 </script>
 {% endblock %}

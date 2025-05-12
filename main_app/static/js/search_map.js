@@ -12,8 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-74.0060, 40.7128],
-        zoom: 12
+        center: [-73.94, 40.7128], // NYC coordinates
+        zoom: 10,
+        maxBounds: [
+            [-75.073700,40.271144], // Southwest corner
+            [-72.460327,41.233413]  // Northeast corner
+    ]
     });
 
     // Add controls
