@@ -3,6 +3,12 @@ body {
     text-align: center;
     overflow-x: hidden;
 }
+
+img {
+    max-width: 100%;
+    max-height: auto;
+}
+
 #map {
     position: absolute;
     height: 100%;
@@ -11,3 +17,47 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
+
+#legend {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
+    margin-bottom: 30px;
+    margin-right: 20px;
+    background: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+}
+
+#legend-title {
+    font-size: small;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+#legend-image {
+    padding-top: 5px;
+    width: 300px;
+}
+
+#legend-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.legend-h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.zipcodeHeader {
+    font-size: 24px;
+}
+
+.gradeHeader {
+    font-size: 24px;
+}
+

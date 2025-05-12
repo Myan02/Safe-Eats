@@ -29,6 +29,8 @@ import os
 import pandas as pd
 import geopandas as gpd
 from matplotlib import colors
+import matplotlib.pyplot as plt
+import numpy as np
 
 class Inspections():
     

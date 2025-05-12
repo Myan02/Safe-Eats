@@ -27,8 +27,9 @@ let currentZipcode = 0;             // keeps track of the current zipcode the us
 
 // single popup to display overview, shows info about average grade
 const zipcode_popup = new mapboxgl.Popup({
-    closeButton: false,
-    closeOnClick: false
+    'closeButton': false,
+    'closeOnClick': false,
+    'className': 'zipcodePopup'
 });
 
 
@@ -48,7 +49,7 @@ map.on('load', async () => {
         paint: {
             'fill-color': 'orange'  // default color in case the actual colors dont work
         }
-    }, 'settlement-minor-label');   // put this layer behind the settlement-minor-label layer so we can see some titles over the map
+    });   // put this layer behind the settlement-minor-label layer so we can see some titles over the map
 
     const matchExpression = await updateZipcodes();       // get match expression to match colors to grades
 
@@ -65,7 +66,7 @@ map.on('load', async () => {
             'line-color': '#ffffff',    // set each border color to white
             'line-width': 1             // set the border thickness to 1
         }
-    }, 'settlement-minor-label');       // put this layer behind the settlement-minor-label layer so we can see some titles over the map
+    });       // put this layer behind the settlement-minor-label layer so we can see some titles over the map
 
     // add the zoom in, zoom out, and compass buttons to the map
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
@@ -189,8 +190,10 @@ map.on('mousemove', 'zipcode-fill', (e) => {
     zipcode_popup
         .setLngLat(e.lngLat)
         .setHTML(`
-                <h1>zipcode: ${properties.zipcode}</h1>
-                <h1>average grade: ${parseFloat(properties.average_grade).toFixed(2)}</h1>
+                <div id="averageGradeDiv">
+                    <h1 class="zipcodeHeader">zipcode: ${properties.zipcode}</h1>
+                    <h1 class="gradeHeader">average grade: ${parseFloat(properties.average_grade).toFixed(2)}</h1>
+                </div>
             `)
         .addTo(map);
 
@@ -228,6 +231,8 @@ map.on('mouseleave', 'zipcode-fill', (e) => {
     }
     
 });
+
+
 
 
 

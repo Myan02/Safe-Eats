@@ -2,7 +2,34 @@
 
 {% block content %}
     <h1>NYC Map</h1>
-    <div id="map"></div>
+    <div id="map">
+        <div id="legend">
+            <div>
+                <h1 id="legend-title">Average Restaurant Grade Per Zipcode<br>(Lower is Grade A, Higher is Grade C)</h1>
+            </div>
+            <div id="legend-image">
+                <img src="../static/data_files/legend_colormap.PNG" alt="">
+            </div>
+            <div id="legend-values">
+                <div class="leg">
+                    <h2 class="legend-h2">1.0</h2>
+                </div>
+                <div class="leg">
+                    <h2 class="legend-h2">1.5</h2>
+                </div>
+                <div class="leg">
+                    <h2 class="legend-h2">2.0</h2>
+                </div>
+                <div class="leg">
+                    <h2 class="legend-h2">2.5</h2>
+                </div>
+                <div class="leg">
+                    <h2 class="legend-h2">3.0</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <script type="module" src="{{ url_for('static', filename='map.js') }}"></script>
