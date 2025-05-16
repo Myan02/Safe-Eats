@@ -4,13 +4,16 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
+
 restaurant_data = 'data/restaurant_data.csv'
-df = pd. read_csv(restaurant_data)
-df.to_feather('data/restaurant_data.feather')
-df = pd.read_feather('data/restaurant_data.feather')
+df = pd.read_csv(restaurant_data)
+# Save as Parquet
+df.to_parquet('data/restaurant_data.parquet')
+# Load from Parquet
+df = pd.read_parquet('data/restaurant_data.parquet')
+
 
 custom_colors = ['#2B7CCC', '#FFAC24', '#45D05E', '#7b6f2b', '#394C54', '#DBCFC6']
-
 
 # Removing unecessary columns
 new_df = df.drop(['Community Board', 'Council District', 'Census Tract','BIN','BBL', 'NTA', 'Location Point1'], axis=1)
@@ -36,12 +39,11 @@ def total_inspections():
     return len(new_df)
 
 def critical_violations():
-    return len(new_df[new_df['CRITICAL FLAG'] == 'Critical'])
+    filtered_df = new_df.dropna(subset=['CRITICAL FLAG'])
+    return len(filtered_df[filtered_df['CRITICAL FLAG'] == 'Critical'])
 
 def average_score():
-    # Filter out rows where 'SCORE' is NaN
     filtered_df = new_df[new_df['SCORE'].notna()]
-    # Calculate the mean of the 'SCORE' column
     return filtered_df['SCORE'].mean().round(2)
 
 
@@ -53,21 +55,29 @@ def worst_borough():
 
 # Create a pie chart
 def create_grade_pie_chart():
-    grade_count = new_df.groupby('GRADE').size().reset_index(name='Count')
+    # Remove rows with NaN in 'GRADE' column
+    filtered_df = new_df.dropna(subset=['GRADE'])
+    grade_count = filtered_df.groupby('GRADE').size().reset_index(name='Count')
     grade_count.sort_values(by='GRADE', ascending=True)
     fig = px.pie(
         grade_count,
         names= 'GRADE' ,
         values='Count',
-        title="Distribution of Restaurant Grades in NYC",
         hole=.3,
         color_discrete_sequence = custom_colors
     )
-    return pio.to_html(fig, full_html=False)
+    fig.update_layout(
+    width=500,
+    height=500,
+    margin=dict(t=100, b=50, l=50, r=50)
+    )
+
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
 
 # Create a bar chart
 def create_grade_bar_chart():
-    grade_count = new_df.groupby('GRADE').size().reset_index(name='Count')
+    filtered_df = new_df.dropna(subset=['GRADE'])
+    grade_count = filtered_df.groupby('GRADE').size().reset_index(name='Count')
     grade_count.sort_values(by='GRADE', ascending=True)
     fig = px.bar(
         grade_count.head(3), 
@@ -76,17 +86,17 @@ def create_grade_bar_chart():
         hover_data = 'Count',
         color='GRADE',
         labels={'GRADE': 'Grade', 'Count': 'Number of Restaurants'},
-        title = 'Distribution of Restaurant Grades in NYC',
         text='Count',
         height=600,
         color_discrete_map = {'A': '#2B7CCC', 'B': '#45D05E', 'C': '#FFAC24'}
     )
-    return pio.to_html(fig, full_html=False)
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
 
 
 
 def create_grade_boro_bar_chart():
-    grade_count_per_boro = new_df.groupby(['GRADE', 'BORO']).size().reset_index(name='Count')
+    filtered_df = new_df.dropna(subset=['GRADE', 'BORO'])
+    grade_count_per_boro = filtered_df.groupby(['GRADE', 'BORO']).size().reset_index(name='Count')
     grade_count_per_boro = grade_count_per_boro[grade_count_per_boro['GRADE'].isin(['A', 'B', 'C'])]
     fig = px.bar(
         grade_count_per_boro.sort_values(by='BORO', ascending=True), 
@@ -94,11 +104,12 @@ def create_grade_boro_bar_chart():
         y='BORO',
         color='GRADE',
         labels={'GRADE': 'Grade', 'Count': 'Number of Restaurants', 'BORO': 'Borough'},
-        title = 'Inspection Grade for all Five Boroughs',
+        title = 'Distribution of Inspection Grades across all 5 Boroughs',
         color_discrete_map = {'A': '#2B7CCC', 'B': '#45D05E', 'C': '#FFAC24'},
         barmode='group',
     )
-    return pio.to_html(fig, full_html=False)
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
+
 
 
 def create_average_score_boro():
@@ -110,7 +121,7 @@ def create_average_score_boro():
         avg_scores,
         x='BORO',
         y='SCORE',
-        title='Average Inspection Score by Borough',
+        title='Average Violation Score by Borough',
         color='BORO',
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
@@ -119,8 +130,24 @@ def create_average_score_boro():
         yaxis_title='Average Score',
         showlegend=False
     )
-    return pio.to_html(fig, full_html=False)  # render inside template
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
 
+
+def create_critical_boro_bar_chart():
+    filtered_df = new_df[new_df['CRITICAL FLAG'] != 'Not Applicable']
+    filtered_df = filtered_df.dropna(subset=['CRITICAL FLAG', 'BORO'])
+    critical_count_per_boro = filtered_df.groupby(['CRITICAL FLAG', 'BORO']).size().reset_index(name='Count')
+    fig = px.bar(
+        critical_count_per_boro.sort_values(by='BORO', ascending=True), 
+        x='Count',
+        y='BORO',
+        color='CRITICAL FLAG',
+        labels={'CRITICAL FLAG': 'Critical Flag', 'Count': 'Number of Restaurants', 'BORO': 'Borough'},
+        title = 'Critical Violations across all 5 Boroughs',
+        color_discrete_map = {'Critical': '#ef4444', 'Not Critical': '#f59e0c'},
+        barmode='group',
+    )
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
 
 
 
@@ -160,16 +187,36 @@ individual = {
     'Other': 'Other'
 }
 
-# Combine into one mapping
+# Create a mapping from individual cuisines to their groups
 cuisine_mapping = {c: group for group, cuisines in groups.items() for c in cuisines}
 cuisine_mapping.update(individual)
-# Map the cuisines to broader categories
-new_df['GROUPED_CUISINE'] = new_df['CUISINE DESCRIPTION'].map(cuisine_mapping).fillna('Other')
-# Exclude 'Not Listed/Not Applicable' from the analysis
-new_df = new_df[new_df['GROUPED_CUISINE'] != 'Not Listed/Not Applicable']
-grade_count_per_cuisine = new_df.groupby(['GRADE', 'GROUPED_CUISINE']).size().reset_index(name='Count')
-grade_count_per_cuisine = grade_count_per_cuisine[grade_count_per_cuisine['GRADE'].isin(['A', 'B', 'C'])]
-grade_count_per_cuisine.sort_values(by='Count', ascending=False, inplace=True)
+
+# Apply mapping and clean up
+new_df['GROUPED_CUISINE'] = (
+    new_df['CUISINE DESCRIPTION']
+    .map(cuisine_mapping)
+    .fillna('Other')
+    .str.strip()
+    .str.title()
+)
+
+filtered_cuisine_df = new_df[
+    ~new_df['GROUPED_CUISINE'].isin([
+        'Not Listed/Not Applicable',
+        'Other',
+        'Unknown',
+        'Specialties'
+    ])
+]
+
+grade_count_per_cuisine = (
+    filtered_cuisine_df[filtered_cuisine_df['GRADE'].isin(['A', 'B', 'C'])]
+    .groupby(['GRADE', 'GROUPED_CUISINE'])
+    .size()
+    .reset_index(name='Count')
+    .sort_values(by='Count', ascending=False)
+)
+
 
 # Create a bar chart for cuisines
 def create_cuisines_chart():
@@ -181,10 +228,10 @@ def create_cuisines_chart():
         labels={'GRADE': 'Grade', 'Count': 'Number of Restaurants', 'GROUPED_CUISINE': 'Cuisine'},
         title='Inspection Grade for All Cuisines',
         color_discrete_map={'A': '#2B7CCC', 'B': '#45D05E', 'C': '#FFAC24'},
-        width=1200,  
+        width=1100,  
         height=800   
     )   
-    return pio.to_html(fig, full_html=False)
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
 
 
 
@@ -208,15 +255,19 @@ def create_cuisines_percentage_chart():
         },
         title='Inspection Grade vs Cuisine Type by Percentage',
         color_discrete_map={'A': '#2B7CCC', 'B': '#45D05E', 'C': '#FFAC24'},
-        width=1200,
+        width=1100,
         height=800
     )
-    return pio.to_html(fig, full_html=False)
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
 
 
 
+# Step 1: Group by cuisine and violation
 violations_per_cuisine = new_df.groupby(['GROUPED_CUISINE', 'VIOLATION DESCRIPTION']).size().reset_index(name='Violation Count')
-total_violations_per_cuisine = (violations_per_cuisine.groupby('GROUPED_CUISINE')['Violation Count'].sum().reset_index())
+violations_per_cuisine = violations_per_cuisine[violations_per_cuisine['GROUPED_CUISINE'] != 'Not Listed/Not Applicable']
+violations_per_cuisine = violations_per_cuisine[violations_per_cuisine['GROUPED_CUISINE'] != 'Other']
+total_violations_per_cuisine = violations_per_cuisine.groupby('GROUPED_CUISINE')['Violation Count'].sum().reset_index()
+
 
 # bar chart of violation per cuisine
 def create_violations_per_cuisine_chart():
@@ -226,16 +277,17 @@ def create_violations_per_cuisine_chart():
         y='GROUPED_CUISINE',
         labels={'Violation Count': 'Number of Violations', 'GROUPED_CUISINE': 'Cuisine'},
         title='Total Violations per Cuisine',
-        width=1200,
+        width=1100,
         height=800,
         color_discrete_sequence=['#8B0000']
     )
-    return pio.to_html(fig, full_html=False)
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
 
 
 # Get latest inspection date per cuisine
 latest_dates_by_cuisine = new_df.groupby('GROUPED_CUISINE')['INSPECTION DATE'].max().reset_index()
-# Get all rows from those latest inspection dates
+latest_dates_by_cuisine = latest_dates_by_cuisine[latest_dates_by_cuisine['GROUPED_CUISINE'] != 'Not Listed/Not Applicable']
+latest_dates_by_cuisine = latest_dates_by_cuisine[latest_dates_by_cuisine['GROUPED_CUISINE'] != 'Other']
 latest_inspections = pd.merge(
     new_df,
     latest_dates_by_cuisine,
@@ -244,21 +296,22 @@ latest_inspections = pd.merge(
 # Keep only rows with real violations
 latest_inspections = latest_inspections.dropna(subset=['VIOLATION DESCRIPTION'])
 # Count total violations per cuisine
-violations_per_cuisine = latest_inspections.groupby('GROUPED_CUISINE').size().reset_index(name='Latest Violations')
+lastest_violations_per_cuisine = latest_inspections.groupby('GROUPED_CUISINE').size().reset_index(name='Latest Violations')
 
 # Bar chart of latest violations per cuisine
 def create_latest_violations_per_cuisine_chart():
     fig = px.bar(
-        violations_per_cuisine.sort_values(by='Latest Violations', ascending=True),
+        lastest_violations_per_cuisine.sort_values(by='Latest Violations', ascending=True),
         x='Latest Violations',
         y='GROUPED_CUISINE',
         labels={'Latest Violations': 'Number of Violations', 'GROUPED_CUISINE': 'Cuisine'},
         title='Latest Violations per Cuisine',
-        width=1200,
+        width=1100,
         height=800,
         color_discrete_sequence=['#8B0000']
     )
-    return pio.to_html(fig, full_html=False)
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
+
 
 cuisine_violation_per_boro = (new_df
     .dropna(subset=['VIOLATION DESCRIPTION'])  # Only actual violations
@@ -266,7 +319,6 @@ cuisine_violation_per_boro = (new_df
     .count()
     .reset_index(name='Violation Count')
 )
-
 
 # Count violations (rows) and unique inspections (CAMIS)
 violations = (
@@ -280,6 +332,8 @@ violations = (
 )
 
 violations['Average_Violations_Per_Inspection'] = (violations['Total_Violations'] / violations['Total_Inspections']).round(2)
+violations = violations[violations['GROUPED_CUISINE'] != 'Not Listed/Not Applicable']
+violations = violations[violations['GROUPED_CUISINE'] != 'Other']
 
 # Create a bar chart for violations per cuisine and borough
 def create_avg_violations_by_cuisine_and_borough_chart():
@@ -292,7 +346,8 @@ def create_avg_violations_by_cuisine_and_borough_chart():
         facet_col='BORO',
         labels={'GROUPED_CUISINE': 'Cuisine Type'},
         title='Average Number of Violations per Restaurant by Cuisine and Borough',
-        height=800
+        height=800,
+        width=1100
     )
 
     # Remove default axis titles
@@ -312,7 +367,7 @@ def create_avg_violations_by_cuisine_and_borough_chart():
         align='center'
     )
 
-    return pio.to_html(fig, full_html=False)
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
 
 
 violation_counts = new_df.dropna(subset=['VIOLATION CODE'])
@@ -334,25 +389,76 @@ def create_violation_code_treemap():
         font=dict(size=14)
     )
 
-    return pio.to_html(fig, full_html=False)
+    return pio.to_html(fig, full_html=False, config={'displayModeBar': False})
 
 
 
-# # Create a bar chart for the top 10 cuisines
-# def create_top_10_cuisines_chart():
-#     top_10 = grade_count_per_cuisine.sort_values(by='Count', ascending=False).head(10)
-#     fig = px.bar(
-#         top_10,
-#         x='Count',
-#         y='GROUPED_CUISINE',
-#         color='GRADE',
-#         labels={'GRADE': 'Grade', 'Count': 'Number of Restaurants', 'GROUPED_CUISINE': 'Cuisine'},
-#         title='Top 10 Cuisines with the Most Inspections',
-#         color_discrete_map={'A': '#2B7CCC', 'B': '#45D05E', 'C': '#FFAC24'},
-#         width=1200,
-#         height=800
-#     )
-#     return pio.to_html(fig, full_html=False)
+def create_most_critical_violation():
+    filtered_df = new_df.dropna(subset=['CRITICAL FLAG', 'VIOLATION DESCRIPTION'])
+    most_common_critical = filtered_df[filtered_df['CRITICAL FLAG'] == 'Critical']['VIOLATION DESCRIPTION'].value_counts().idxmax()
+    return most_common_critical
+
+def create_most_non_critical_violation():
+    filtered_df = new_df.dropna(subset=['CRITICAL FLAG', 'VIOLATION DESCRIPTION'])
+    most_non_common_critical = filtered_df[filtered_df['CRITICAL FLAG'] == 'Not Critical']['VIOLATION DESCRIPTION'].value_counts().idxmax()
+    return most_non_common_critical
+
+def create_worst_month_for_violations():
+    filtered_df = new_df.dropna(subset=['INSPECTION DATE', 'VIOLATION DESCRIPTION'])
+    # Extract full month name
+    filtered_df['Month'] = filtered_df['INSPECTION DATE'].dt.strftime('%B')
+
+    # Group by month and count violations
+    monthly_counts = filtered_df.groupby('Month')['VIOLATION DESCRIPTION'].size()
+
+    # Reorder months
+    month_order = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December']
+    monthly_counts = monthly_counts.reindex(month_order)
+
+    # Calculate worst month
+    avg = monthly_counts.mean()
+    worst_month = monthly_counts.idxmax()
+    worst_value = monthly_counts.max()
+    percent_above_avg = round((worst_value - avg) / avg * 100)
+
+    worst_month_summary = f"{worst_month} ({percent_above_avg}% higher than average)"
+    return worst_month_summary
+
+
+# def create_top_5_safest_cuisines():
+#     filtered_df = new_df.dropna(subset=['SCORE', 'GROUPED_CUISINE'])
+#     avg_scores = filtered_df.groupby('GROUPED_CUISINE')['SCORE'].mean().reset_index()
+#     avg_scores['SCORE'] = avg_scores['SCORE'].round(2)
+#     top_5_safest_cuisines = avg_scores.sort_values(by='SCORE').head(5)
+#     return top_5_safest_cuisines
+
+def create_top_5_safest_cuisines():
+    filtered_df = new_df.dropna(subset=['GROUPED_CUISINE', 'SCORE'])
+
+     # Exclude cuisines that are "Not Listed/Not Applicable"
+    filtered_df = filtered_df[filtered_df['GROUPED_CUISINE'] != 'Not Listed/Not Applicable']
+    filtered_df = filtered_df[filtered_df['GROUPED_CUISINE'] != 'Specialties']
+    filtered_df = filtered_df[filtered_df['GROUPED_CUISINE'] != 'Other']
+
+    grouped = filtered_df.groupby('GROUPED_CUISINE')['SCORE'].mean().reset_index()
+    safest = grouped.sort_values(by='SCORE').head(5)
+    return safest.to_dict(orient='records')
+
+
+
+def create_worse_restaurant_boro_chart():
+    filtered_df = new_df.dropna(subset=['BORO', 'DBA', 'SCORE'])
+    filtered_df = filtered_df[filtered_df['GRADE'].isin(['A', 'B', 'C'])]
+    worst_per_boro = filtered_df.sort_values(by='SCORE', ascending=False).groupby('BORO').head(1)
+    worst_per_boro = worst_per_boro[['DBA', 'BORO', 'SCORE']].reset_index(drop=True)
+    return worst_per_boro.to_dict(orient='records')
+
+
+
+
+    
+
 
 
 

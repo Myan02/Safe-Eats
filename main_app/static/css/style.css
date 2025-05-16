@@ -304,6 +304,16 @@ body.modal-open {
     margin-right: -50vw;
 }
 
+.about_container {
+    background-color: #2563eb;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
 .rounded-custom {
     border-radius: 10px;
 }
@@ -342,8 +352,70 @@ body.modal-open {
 }
 
 .responsive-plotly > div {
-    width: 100%;
+    width: auto;
     height: auto;
 }
 
 
+/* Card Styles */
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 10px;
+  }
+  
+  .card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    width: 280px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+  }
+  
+  .icon.red {
+    background-color: #fee2e2;
+    color: #ef4444;
+  }
+  
+  .icon.yellow {
+    background-color: #fef9c3;
+    color: #eab308;
+  }
+  
+  .icon.blue {
+    background-color: #dbeafe;
+    color: #3b82f6;
+  }
+  
+  .label {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 6px;
+  }
+  
+  .value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+  

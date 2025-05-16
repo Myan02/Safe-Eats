@@ -1,7 +1,96 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+
+<div class="statistics text-white p-5">
+    <div class="text-center my-5">
+        <h1 class="display-4 fw-bold">About</h1>
+        <p class="lead">
+            Explore Safe Eats NYC and the people who built it.
+        </p>
+    </div>
+</div>
+
+<div>
+   <h2 class="text-center my-5 fw-bold mt-5 fs-4">About the project</h2>
+    <p class="mt-5 ms-5 me-5" style="font-size: 0.9rem;">
+    Health risks don’t only come from what’s on your plate, they also come from how food is handled behind the scenes. 
+    Food safety in urban environments like New York City is a critical public health concern, especially in neighborhoods with high restaurant density and limited resources for inspection oversight.
+    This raises key questions for policymakers, city planners, and communities:
+    Where are violations happening most? Which cuisines or boroughs are safer? How do we track and understand food safety over time?
+    We know that navigating restaurant inspections can be confusing, with different grades, scores, and violation codes. 
+    To make sense of it all, our team built Safe Eats NYC, a platform that brings transparency to health inspection data across all five boroughs.
+    Safe Eats NYC visualizes key data like restaurant grades, average violation scores, critical issues by cuisine, and borough-level safety trends. 
+    It aims to empower New Yorkers, from diners to decision-makers, with accessible, actionable insights to help drive informed choices and stronger accountability.
+    </p>
+    <p class="ms-5 me-5" style="font-size: 0.9rem;">
+    Safe Eats NYC maps and visualizes restaurant inspection data across the five boroughs to provide actionable insights into food safety trends. 
+    The platform includes an interactive heatmap showing average inspection scores by neighborhood, allowing users to quickly identify areas with higher or lower food safety performance.
+    To assess the overall risk of health violations in different communities, Safe Eats NYC aggregates and compares key inspection metrics, including average score, frequency of critical violations, and cuisine-specific patterns. 
+    The built-in search function lets users look up individual restaurants or filter results by zip code or borough, making it easy to explore both local and citywide food safety conditions.
+    Visual dashboards highlight trends over time, breakdowns by cuisine type, and comparisons across boroughs. 
+    All data featured on the Safe Eats NYC platform is downloadable from NYC Open Data, enabling community groups, researchers, and policymakers to conduct deeper analysis, advocate for safer food practices, and inform equitable health policy decisions across New York City.
+    </p>
+
+     <h2 class="text-center my-5 fw-bold mt-5 fs-4">How it works</h2>
+<div class="container my-5">
+  <div class="row g-4 justify-content-center">
+
+    <!-- Step 1 -->
+    <div class="col-md-4">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100 text-center">
+        <div class="step-circle mb-3">1</div>
+        <p class="mb-0" style="font-size: 0.95rem;">Enter any NYC address in the search box.</p>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="col-md-4">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100 text-center">
+        <div class="step-circle mb-3">2</div>
+        <p class="mb-0" style="font-size: 0.95rem;">We'll pinpoint the location on the map.</p>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="col-md-4">
+      <div class="p-4 bg-white rounded-4 shadow-sm h-100 text-center">
+        <div class="step-circle mb-3">3</div>
+        <p class="mb-0" style="font-size: 0.95rem;">Discover the 10 nearest restaurants with inspection grades.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    
+
+    <h2 class="text-center my-5 fw-bold mt-5 fs-4">Team</h2>
+    <div class="card-container">
+    <div class="card">
+        <div class="icon blue"><i class="fas fa-user"></i></div>
+        <div class="value">Massiel Ortiz</div>
+        <div class="label">Massiel Ortiz</div>
+    </div>
+    <div class="card">
+        <div class="icon blue"><i class="fas fa-user"></i></div>
+        <div class="value">Michael Baburyan</div>
+        <div class="label">[Name]</div>
+    </div>
+    <div class="card">
+        <div class="icon blue"><i class="fas fa-user"></i></div>
+        <div class="value">Mingzhi Xu</div>
+        <div class="label">[Name]</div>
+    </div>
+    </div>
+
+
+</div>
+
+<!-- <div class="container mt-4">
     <h1>About Safe-Eats</h1>
     
     <div class="row">
@@ -22,5 +111,5 @@
             <p>Restaurant grades help you make informed dining choices based on cleanliness and food safety standards.</p>
         </div>
     </div>
-</div>
+</div> -->
 {% endblock %}
