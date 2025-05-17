@@ -1,20 +1,19 @@
 """Core restaurant search functionality."""
-from .data_loader import DataService
-from .geocoder import GeoService
+from flask import current_app
 import pandas as pd
 import logging
 
-geo_service = GeoService()
-
 def search_restaurants(address):
-    """Find nearby restaurants with complete details."""
+    """Find nearby restaurants using pre-initialized services."""
     try:
-        data_service = DataService()
+        data_service = current_app.extensions['data_service']
+        geo_service = current_app.extensions['geo_service']
+        
         lat, lon = geo_service.geocode_address(address)
         if not lat or not lon:
             raise ValueError("Could not locate address")
         
-        nearby = data_service.get_nearby_restaurants(lat, lon)
+        nearby = current_app.data_service.get_nearby_restaurants(lat, lon)
         grouped = nearby.sort_values('INSPECTION DATE', ascending=False).groupby('CAMIS')
         
         results = []

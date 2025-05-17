@@ -8,7 +8,11 @@
 venv/
 *.pyc
 __pycache__/
+.vscode
 *.swp
 .DS_Store
 data/
 main_app/__pycache__/
+Dockerfile
+boot.sh
+.dockerignore
