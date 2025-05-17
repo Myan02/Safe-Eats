@@ -121,7 +121,7 @@ def create_average_score_boro():
         avg_scores,
         x='BORO',
         y='SCORE',
-        title='Average Violation Score by Borough',
+        title='Average Inspection Score by Borough',
         color='BORO',
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
@@ -142,7 +142,7 @@ def create_critical_boro_bar_chart():
         x='Count',
         y='BORO',
         color='CRITICAL FLAG',
-        labels={'CRITICAL FLAG': 'Critical Flag', 'Count': 'Number of Restaurants', 'BORO': 'Borough'},
+        labels={'CRITICAL FLAG': 'Critical Flag', 'Count': 'Number of Violations', 'BORO': 'Borough'},
         title = 'Critical Violations across all 5 Boroughs',
         color_discrete_map = {'Critical': '#ef4444', 'Not Critical': '#f59e0c'},
         barmode='group',
@@ -253,7 +253,7 @@ def create_cuisines_percentage_chart():
             'Percentage': 'Percentage of Restaurants',
             'GROUPED_CUISINE': 'Cuisine Type'
         },
-        title='Inspection Grade vs Cuisine Type by Percentage',
+        title='Distribution of Grades in Each Cuisine',
         color_discrete_map={'A': '#2B7CCC', 'B': '#45D05E', 'C': '#FFAC24'},
         width=1100,
         height=800

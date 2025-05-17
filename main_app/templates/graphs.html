@@ -45,10 +45,50 @@
     </div>
 </div>
 
-<!-- Main content inside container -->
+<!-- Graph Visualizations -->
+
 <div class="container">
     <h2 style="margin-top: 3rem; margin-bottom: 3rem; font-weight: bold; text-align: left;">NYC Restaurant Inspection Overview</h2>
 </div>
+
+<h3 class="chart-title">NYC Health Inspection Grading Scale</h3>
+<div class="card-container" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+  <div class="card">
+    <div class="icon"><i class="fa-solid fa-a" style="color: #3a88fe;"></i></div>
+    <div class="label">A = 0 - 13 points</div>
+    <div class="value"></div>
+  </div>
+  <div class="card">
+    <div class="icon"><i class="fa-solid fa-b" style="color: #77bb41;"></i></div>
+    <div class="label">B = 14 - 27 points</div>
+    <div class="value"></div>
+  </div>
+  <div class="card">
+    <div class="icon"><i class="fa-solid fa-c" style="color: #ffaa00;"></i></div>
+    <div class="label">C = 28+ points</div>
+    <div class="value"></div>
+  </div>
+</div>
+
+<div class="card-container" style="display: flex; justify-content: center; gap: 1rem;">
+  <div class="card">
+    <div class="icon"><i class="fa-solid fa-n" style="color: #65705c;"></i></div>
+    <div class="label">N = Not yet graded</div>
+    <div class="value"></div>
+  </div>
+  <div class="card">
+    <div class="icon"><i class="fa-solid fa-p" style="color: #292837;"></i></div>
+    <div class="label">P = Grade pending issued on re-opening</div>
+    <div class="value"></div>
+  </div>
+  <div class="card">
+    <div class="icon"><i class="fa-solid fa-z" style="color: #a4955f;"></i></div>
+    <div class="label">Z = Grade pending</div>
+    <div class="value"></div>
+  </div>
+</div>
+
+
 
 <div class="chart-row-single">
     <div class="chart-box">
@@ -56,11 +96,9 @@
         <div class="chart-container-two">
             <div class="responsive-plotly">
                 {{ grade_pie|safe }}
-                <h6>hello</h6>
             </div>
             <div class="responsive-plotly">
                 {{ grade_bar|safe }}
-                <h6>hello</h6>
             </div>
         </div>
     </div>
@@ -104,7 +142,6 @@
       <div class="value">{{worst_month}}</div>
     </div>
 </div>
-  
   
 
 
@@ -191,7 +228,7 @@
       </div>
     </div>
 
-    <!-- Safest Cuisines Bars (Right Card) -->
+    <!-- Safest Cuisines Bars -->
     <div class="col-md-6">
       <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
         <h3 class="chart-title mb-4">Top 5 Safest Cuisines</h3>
@@ -224,10 +261,18 @@
         <div class="chart-container-two">
             <div class="responsive-plotly">
                 {{ violation_code|safe}}
+            <p style="text-align: center; font-size: 0.9rem;">
+            To understand what each violation code means, 
+            <a href="https://www.nyc.gov/assets/doh/downloads/pdf/rii/blue-book.pdf" target="_blank">
+                click here to view the NYC Health Code Reference (PDF)
+            </a>.
+            </p>
             </div>
         </div>
     </div>
 </div>
+
+<div style="height: 60px;"></div>
 
 
 {% endblock %}

@@ -419,3 +419,9 @@ body.modal-open {
     color: #1f2937;
   }
   
+.underline {
+  width: 60px;
+  height: 4px;
+  background-color: #2f80ed;
+}
+
