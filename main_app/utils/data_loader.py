@@ -24,6 +24,7 @@ class SpatialService:
             parquet_path = self.data_path.with_suffix('.parquet')
             if parquet_path.exists():
                 gdf = gpd.read_parquet(parquet_path)
+
             else:
                 gdf = gpd.read_file(self.data_path)
                 gdf.to_parquet(parquet_path)
@@ -123,6 +124,12 @@ class DataService:
         df['GRADE'] = df['GRADE'].str.upper()
         df = df[df['GRADE'].isin(['A', 'B', 'C'])]
         means_df = df[['ZIPCODE', 'GRADE']].copy()
+        means_df['ZIPCODE'] = (
+            means_df['ZIPCODE']
+            .astype(str)
+            .str.extract(r'(\d+)')[0]
+            .str.zfill(5)
+        )
         means_df['MEAN'] = means_df['GRADE'].map(grade_to_value)
         means_df = means_df.groupby('ZIPCODE')['MEAN'].mean().reset_index()
         
@@ -135,12 +142,13 @@ class DataService:
         
         # Convert all to str to make types more consistent
         means_df = means_df.astype(str)
-        
+                
         # Merge with zipcode geoms and export
         spatial_service = SpatialService()
         spatial_df = spatial_service.data.merge(
             means_df, left_on='postalCode', right_on='ZIPCODE', how='left'
         )
+        
         spatial_df.drop(columns=['ZIPCODE'], inplace=True)
         spatial_df.to_file(FlaskConfig.DATA_DIR / "zipcode_border_grades.geojson", driver='GeoJSON')
         

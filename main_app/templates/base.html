@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.search') }}">
                 <i class="fas fa-utensils text-primary fs-4 me-4"></i>
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1.30rem; color: #ffffff;">
                     Safe Eats NYC
@@ -24,10 +24,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav">
-                    <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
-                    <a class="nav-link" href="{{ url_for('main.search') }}">Search</a>
-                    <a class="nav-link" href="{{ url_for('main.about') }}">About</a>
+                    <a class="nav-link" href="{{ url_for('main.search') }}">Home</a>
+                    <a class="nav-link" href="{{ url_for('main.heatmap') }}">Heatmap</a>
                     <a class="nav-link" href="{{ url_for('main.graphs') }}">Data Analysis</a>
+                    <a class="nav-link" href="{{ url_for('main.about') }}">About</a>
                 </div>
             </div>
         </div>

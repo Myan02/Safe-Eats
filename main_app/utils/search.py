@@ -4,9 +4,9 @@ import pandas as pd
 import logging
 
 def search_restaurants(address):
+    """Find nearby restaurants with complete details."""
     """Find nearby restaurants using pre-initialized services."""
     try:
-        data_service = current_app.extensions['data_service']
         geo_service = current_app.extensions['geo_service']
         
         lat, lon = geo_service.geocode_address(address)

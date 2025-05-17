@@ -10,8 +10,6 @@ html {
   height: 100vh;
 }
 
-  
-
 /* Map Container */
 #map {
   height: 100%;
@@ -289,138 +287,137 @@ body.modal-open {
 }
 
 .alert-warning {
-    color: #856404;
-    background-color: #fff3cd;
-    border-color: #ffeeba;
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
 }
-
 
 /* Data Analsyis */
 .statistics {
-    background-color: #2563eb;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+  background-color: #2563eb;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 .about_container {
-    background-color: #2563eb;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+  background-color: #2563eb;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 .rounded-custom {
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
 .chart-row-single {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
 }
 
 .chart-box {
-    width: 100%;
-    max-width: 1200px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    padding: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
 }
 
 .chart-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .chart-container-two {
-    display: flex;
-    gap: 2rem;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .responsive-plotly {
-    flex: 1 1 48%;
+  flex: 1 1 48%;
 }
 
 .responsive-plotly > div {
-    width: auto;
-    height: auto;
+  width: auto;
+  height: auto;
 }
-
 
 /* Card Styles */
 .card-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 10px;
-  }
-  
-  .card {
-    background-color: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    padding: 20px;
-    width: 280px;
-    text-align: center;
-    transition: transform 0.2s;
-  }
-  
-  .card:hover {
-    transform: translateY(-3px);
-  }
-  
-  .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    margin: 0 auto 10px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-  }
-  
-  .icon.red {
-    background-color: #fee2e2;
-    color: #ef4444;
-  }
-  
-  .icon.yellow {
-    background-color: #fef9c3;
-    color: #eab308;
-  }
-  
-  .icon.blue {
-    background-color: #dbeafe;
-    color: #3b82f6;
-  }
-  
-  .label {
-    font-size: 0.9rem;
-    color: #6b7280;
-    margin-bottom: 6px;
-  }
-  
-  .value {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #1f2937;
-  }
-  
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 10px;
+}
+
+.card-analysis {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  width: 280px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.card-analysis:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+}
+
+.icon.red {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.icon.yellow {
+  background-color: #fef9c3;
+  color: #eab308;
+}
+
+.icon.blue {
+  background-color: #dbeafe;
+  color: #3b82f6;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
 .underline {
   width: 60px;
   height: 4px;

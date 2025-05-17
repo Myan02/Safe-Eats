@@ -26,20 +26,11 @@ from main_app.plots import create_worse_restaurant_boro_chart
 from main_app.plots import create_top_5_safest_cuisines
 
 
-
 bp = Blueprint('main', __name__)
 
-@bp.route('/')
-def index():
-    """Render the main search page."""
-    return render_template('index.html', mapbox_token=current_app.config['MAPBOX_TOKEN'])
 
-@bp.route('/about')
-def about():
-    """Render the about page."""
-    return render_template('about.html')
 
-@bp.route('/search', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET', 'POST'])
 def search():
     
     if request.method == 'POST':
@@ -64,6 +55,16 @@ def search():
     
     elif request.method == 'GET':
         return render_template('search.html', mapbox_token=current_app.config['MAPBOX_TOKEN'])
+    
+@bp.route('/heatmap')
+def heatmap():
+    """Render the main search page"""
+    return render_template('heatmap.html', mapbox_token=current_app.config['MAPBOX_TOKEN'])
+
+@bp.route('/about')
+def about():
+    """Render the about page."""
+    return render_template('about.html')
     
 @bp.route('/fetch_geoms', methods=['POST', 'GET'])
 def fetch_geoms():

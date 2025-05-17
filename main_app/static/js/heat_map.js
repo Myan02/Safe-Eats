@@ -47,7 +47,7 @@ map.on('load', async () => {
         paint: {
             'fill-color': 'orange'  // default color in case the actual colors dont work
         }
-    });   // put this layer behind the settlement-minor-label layer so we can see some titles over the map
+    });   
 
     const matchExpression = await updateZipcodes();       // get match expression to match colors to grades
 
@@ -64,7 +64,7 @@ map.on('load', async () => {
             'line-color': '#ffffff',    // set each border color to white
             'line-width': 1             // set the border thickness to 1
         }
-    });       // put this layer behind the settlement-minor-label layer so we can see some titles over the map
+    });       
 
     // add the zoom in, zoom out, and compass buttons to the map
     map.addControl(new mapboxgl.NavigationControl());
@@ -106,6 +106,8 @@ map.on('mousemove', 'zipcode-fill', (e) => {
         "average_grade": response.properties.MEAN,
         "color": response.properties.COLOR
     }
+
+    console.log(properties)
 
     // how zoomed in are ya?
     const zoomLevel = map.getZoom();

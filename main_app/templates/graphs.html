@@ -1,223 +1,231 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <!-- Full-width blue section -->
 <div class="statistics text-white p-5">
-    <div class="container">
-        <h1 class="display-4 fw-bold">NYC Restaurant Inspection Analysis</h1>
-        <p class="lead">
-            Explore health inspection violations across New York City restaurants.<br>
-            Make informed dining decisions with our data analysis.
-        </p>
-    </div>
+  <div class="container">
+    <h1 class="display-4 fw-bold">NYC Restaurant Inspection Analysis</h1>
+    <p class="lead">
+      Explore health inspection violations across New York City restaurants.<br />
+      Make informed dining decisions with our data analysis.
+    </p>
+  </div>
 
-    <div class="mt-5">
-        <div class="p-3 rounded-custom bg-light">
-            <h3 class="h5 mb-4 text-black fw-bold">Key Statistics</h3>
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="p-3 rounded bg-primary bg-opacity-10">
-                        <small class="text-primary">Total Inspections</small>
-                        <h4 class="fw-bold text-black">{{ all_inspections }}</h4>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-3 rounded bg-success bg-opacity-10">
-                        <small class="text-success">Critical Violations</small>
-                        <h4 class="fw-bold text-black">{{ critical }}</h4>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-3 rounded bg-warning bg-opacity-25">
-                        <small class="text-warning">Avg. Score</small>
-                        <h4 class="fw-bold text-black">{{avg_score}}</h4>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-3 rounded bg-danger bg-opacity-25">
-                        <small class="text-danger">Worst Borough</small>
-                        <h4 class="fw-bold text-black">{{bad_borough}}</h4>
-                    </div>
-                </div>
-            </div>
+  <div class="mt-5">
+    <div class="p-3 rounded-custom bg-light">
+      <h3 class="h5 mb-4 text-black fw-bold">Key Statistics</h3>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="p-3 rounded bg-primary bg-opacity-10">
+            <small class="text-primary">Total Inspections</small>
+            <h4 class="fw-bold text-black">{{ all_inspections }}</h4>
+          </div>
         </div>
+        <div class="col-md-6">
+          <div class="p-3 rounded bg-success bg-opacity-10">
+            <small class="text-success">Critical Violations</small>
+            <h4 class="fw-bold text-black">{{ critical }}</h4>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 rounded bg-warning bg-opacity-25">
+            <small class="text-warning">Avg. Score</small>
+            <h4 class="fw-bold text-black">{{avg_score}}</h4>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 rounded bg-danger bg-opacity-25">
+            <small class="text-danger">Worst Borough</small>
+            <h4 class="fw-bold text-black">{{bad_borough}}</h4>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Graph Visualizations -->
 
 <div class="container">
-    <h2 style="margin-top: 3rem; margin-bottom: 3rem; font-weight: bold; text-align: left;">NYC Restaurant Inspection Overview</h2>
+  <h2
+    style="
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+      font-weight: bold;
+      text-align: left;
+    "
+  >
+    NYC Restaurant Inspection Overview
+  </h2>
 </div>
 
 <h3 class="chart-title">NYC Health Inspection Grading Scale</h3>
-<div class="card-container" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
-  <div class="card">
-    <div class="icon"><i class="fa-solid fa-a" style="color: #3a88fe;"></i></div>
+<div
+  class="card-container"
+  style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem"
+>
+  <div class="card-analysis">
+    <div class="icon"><i class="fa-solid fa-a" style="color: #3a88fe"></i></div>
     <div class="label">A = 0 - 13 points</div>
     <div class="value"></div>
   </div>
-  <div class="card">
-    <div class="icon"><i class="fa-solid fa-b" style="color: #77bb41;"></i></div>
+  <div class="card-analysis">
+    <div class="icon"><i class="fa-solid fa-b" style="color: #77bb41"></i></div>
     <div class="label">B = 14 - 27 points</div>
     <div class="value"></div>
   </div>
-  <div class="card">
-    <div class="icon"><i class="fa-solid fa-c" style="color: #ffaa00;"></i></div>
+  <div class="card-analysis">
+    <div class="icon"><i class="fa-solid fa-c" style="color: #ffaa00"></i></div>
     <div class="label">C = 28+ points</div>
     <div class="value"></div>
   </div>
 </div>
 
-<div class="card-container" style="display: flex; justify-content: center; gap: 1rem;">
-  <div class="card">
-    <div class="icon"><i class="fa-solid fa-n" style="color: #65705c;"></i></div>
+<div
+  class="card-container"
+  style="display: flex; justify-content: center; gap: 1rem"
+>
+  <div class="card-analysis">
+    <div class="icon"><i class="fa-solid fa-n" style="color: #65705c"></i></div>
     <div class="label">N = Not yet graded</div>
     <div class="value"></div>
   </div>
-  <div class="card">
-    <div class="icon"><i class="fa-solid fa-p" style="color: #292837;"></i></div>
+  <div class="card-analysis">
+    <div class="icon"><i class="fa-solid fa-p" style="color: #292837"></i></div>
     <div class="label">P = Grade pending issued on re-opening</div>
     <div class="value"></div>
   </div>
-  <div class="card">
-    <div class="icon"><i class="fa-solid fa-z" style="color: #a4955f;"></i></div>
+  <div class="card-analysis">
+    <div class="icon"><i class="fa-solid fa-z" style="color: #a4955f"></i></div>
     <div class="label">Z = Grade pending</div>
     <div class="value"></div>
   </div>
 </div>
 
-
-
 <div class="chart-row-single">
-    <div class="chart-box">
-        <h3 class="chart-title">Inspection Grades Distribution</h3>
-        <div class="chart-container-two">
-            <div class="responsive-plotly">
-                {{ grade_pie|safe }}
-            </div>
-            <div class="responsive-plotly">
-                {{ grade_bar|safe }}
-            </div>
-        </div>
+  <div class="chart-box">
+    <h3 class="chart-title">Inspection Grades Distribution</h3>
+    <div class="chart-container-two">
+      <div class="responsive-plotly">{{ grade_pie|safe }}</div>
+      <div class="responsive-plotly">{{ grade_bar|safe }}</div>
     </div>
+  </div>
 </div>
 
 <div class="chart-row-single">
-    <div class="chart-box">
-        <h3 class="chart-title">Boroughs Comparison</h3>
-        <div class="chart-container-two">
-            <div class="responsive-plotly">
-                {{ boro_bar|safe }}
-            </div>
-        </div>
-        <div class="chart-container-two">
-            <div class="responsive-plotly">
-                {{ avg_score_boro|safe }}
-            </div>
-        </div>
-        <div class="chart-container-two">
-            <div class="responsive-plotly">
-                {{ critical_boro|safe }}
-            </div>
-        </div>
+  <div class="chart-box">
+    <h3 class="chart-title">Boroughs Comparison</h3>
+    <div class="chart-container-two">
+      <div class="responsive-plotly">{{ boro_bar|safe }}</div>
     </div>
+    <div class="chart-container-two">
+      <div class="responsive-plotly">{{ avg_score_boro|safe }}</div>
+    </div>
+    <div class="chart-container-two">
+      <div class="responsive-plotly">{{ critical_boro|safe }}</div>
+    </div>
+  </div>
 </div>
 
 <div class="card-container">
-    <div class="card">
-      <div class="icon red"><i class="fas fa-exclamation-triangle"></i></div>
-      <div class="label">Most Common Critical Violation</div>
-      <div class="value">{{critical_violation}}</div>
-    </div>
-    <div class="card">
-      <div class="icon yellow"><i class="fas fa-thermometer-half"></i></div>
-      <div class="label">Most Frequent Non-Critical</div>
-      <div class="value">{{non_critical_violation}}</div>
-    </div>
-    <div class="card">
-      <div class="icon blue"><i class="fas fa-calendar-alt"></i></div>
-      <div class="label">Worst Month for Violations</div>
-      <div class="value">{{worst_month}}</div>
-    </div>
-</div>
-  
-
-
-<div class="chart-row-single">
-    <div class="chart-box">
-        <h3 class="chart-title">Inspection Grades Distribution across all Cuisines</h3>
-        <div class="chart-container-two">
-            <div class="responsive-plotly">
-                {{ cuisines_bar|safe }}
-            </div>
-            <div class="responsive-plotly">
-                {{ cuisines_percentage|safe }}
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="chart-row-single">
-    <div class="chart-box">
-        <h3 class="chart-title">Amount of Violations by Cuisine Type</h3>
-        <div class="chart-container-two">
-            <div class="responsive-plotly">
-                {{ violations_per_cuisine|safe}}
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="chart-row-single">
-    <div class="chart-box">
-        <h3 class="chart-title">Most Recent Amount of Violations by Cuisine Type</h3>
-        <div class="chart-container-two">
-            <div class="responsive-plotly">
-                {{ latest_violations_per_cuisine|safe}}
-            </div>
-        </div>
-    </div>
+  <div class="card-analysis">
+    <div class="icon red"><i class="fas fa-exclamation-triangle"></i></div>
+    <div class="label">Most Common Critical Violation</div>
+    <div class="value">{{critical_violation}}</div>
+  </div>
+  <div class="card-analysis">
+    <div class="icon yellow"><i class="fas fa-thermometer-half"></i></div>
+    <div class="label">Most Frequent Non-Critical</div>
+    <div class="value">{{non_critical_violation}}</div>
+  </div>
+  <div class="card-analysis">
+    <div class="icon blue"><i class="fas fa-calendar-alt"></i></div>
+    <div class="label">Worst Month for Violations</div>
+    <div class="value">{{worst_month}}</div>
+  </div>
 </div>
 
 <div class="chart-row-single">
-    <div class="chart-box">
-        <h3 class="chart-title">Average Violations by Cuisine Type</h3>
-        <div class="chart-container-two">
-            <div class="responsive-plotly">
-                {{ avg_violations_by_cuisine_and_borough|safe}}
-            </div>
-        </div>
+  <div class="chart-box">
+    <h3 class="chart-title">
+      Inspection Grades Distribution across all Cuisines
+    </h3>
+    <div class="chart-container-two">
+      <div class="responsive-plotly">{{ cuisines_bar|safe }}</div>
+      <div class="responsive-plotly">{{ cuisines_percentage|safe }}</div>
     </div>
+  </div>
 </div>
 
+<div class="chart-row-single">
+  <div class="chart-box">
+    <h3 class="chart-title">Amount of Violations by Cuisine Type</h3>
+    <div class="chart-container-two">
+      <div class="responsive-plotly">{{ violations_per_cuisine|safe}}</div>
+    </div>
+  </div>
+</div>
 
+<div class="chart-row-single">
+  <div class="chart-box">
+    <h3 class="chart-title">
+      Most Recent Amount of Violations by Cuisine Type
+    </h3>
+    <div class="chart-container-two">
+      <div class="responsive-plotly">
+        {{ latest_violations_per_cuisine|safe}}
+      </div>
+    </div>
+  </div>
+</div>
 
-<div class="container" style="margin-top: 3rem;">
+<div class="chart-row-single">
+  <div class="chart-box">
+    <h3 class="chart-title">Average Violations by Cuisine Type</h3>
+    <div class="chart-container-two">
+      <div class="responsive-plotly">
+        {{ avg_violations_by_cuisine_and_borough|safe}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="margin-top: 3rem">
   <div class="row g-4">
-    
     <!-- Worst Restaurants Table (Left Card) -->
     <div class="col-md-6">
-      <div style="overflow-x: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+      <div
+        style="
+          overflow-x: auto;
+          background: white;
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        "
+      >
         <h3 class="chart-title">Top 5 Worst Restaurants by Borough</h3>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
-          <thead style="background-color: #f5f5f5;">
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem">
+          <thead style="background-color: #f5f5f5">
             <tr>
-              <th style="padding: 12px; text-align: left;">RESTAURANT</th>
-              <th style="padding: 12px; text-align: left;">BOROUGH</th>
-              <th style="padding: 12px; text-align: left;">SCORE</th>
+              <th style="padding: 12px; text-align: left">RESTAURANT</th>
+              <th style="padding: 12px; text-align: left">BOROUGH</th>
+              <th style="padding: 12px; text-align: left">SCORE</th>
             </tr>
           </thead>
           <tbody>
             {% for row in worst_restaurant_boro %}
             <tr>
-              <td style="padding: 12px; font-weight: bold;">{{ row['DBA'] }}</td>
-              <td style="padding: 12px; color: #555;">{{ row['BORO'] }}</td>
-              <td style="padding: 12px;">
-                <span style="background-color: #fdecea; color: #b91c1c; padding: 4px 10px; border-radius: 999px; font-weight: bold;">
+              <td style="padding: 12px; font-weight: bold">{{ row['DBA'] }}</td>
+              <td style="padding: 12px; color: #555">{{ row['BORO'] }}</td>
+              <td style="padding: 12px">
+                <span
+                  style="
+                    background-color: #fdecea;
+                    color: #b91c1c;
+                    padding: 4px 10px;
+                    border-radius: 999px;
+                    font-weight: bold;
+                  "
+                >
                   {{ row['SCORE'] }}
                 </span>
               </td>
@@ -230,49 +238,67 @@
 
     <!-- Safest Cuisines Bars -->
     <div class="col-md-6">
-      <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+      <div
+        style="
+          background: white;
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        "
+      >
         <h3 class="chart-title mb-4">Top 5 Safest Cuisines</h3>
         {% for cuisine in top_5_safest_cuisines %}
-        <div style="margin-bottom: 20px;">
-          <div style="display: flex; justify-content: space-between;">
+        <div style="margin-bottom: 20px">
+          <div style="display: flex; justify-content: space-between">
             <strong>{{ cuisine['GROUPED_CUISINE'] }}</strong>
-            <span style="color: #555;">Avg. Score: {{ "%.1f"|format(cuisine['SCORE']) }}</span>
+            <span style="color: #555"
+              >Avg. Score: {{ "%.1f"|format(cuisine['SCORE']) }}</span
+            >
           </div>
-          <div style="height: 10px; background-color: #e5e7eb; border-radius: 999px; margin-top: 6px;">
-            <div style="
+          <div
+            style="
+              height: 10px;
+              background-color: #e5e7eb;
+              border-radius: 999px;
+              margin-top: 6px;
+            "
+          >
+            <div
+              style="
               height: 10px;
               width: {{ (40 - cuisine['SCORE']) / 100 * 100 }}%;
               max-width: 100%;
               border-radius: 999px;
-              background: linear-gradient(to right, #34d399, #3b82f6);">
-            </div>
+              background: linear-gradient(to right, #34d399, #3b82f6);"
+            ></div>
           </div>
         </div>
         {% endfor %}
       </div>
     </div>
-
   </div>
 </div>
 
 <div class="chart-row-single">
-    <div class="chart-box">
-        <h3 class="chart-title">Violation Codes</h3>
-        <div class="chart-container-two">
-            <div class="responsive-plotly">
-                {{ violation_code|safe}}
-            <p style="text-align: center; font-size: 0.9rem;">
-            To understand what each violation code means, 
-            <a href="https://www.nyc.gov/assets/doh/downloads/pdf/rii/blue-book.pdf" target="_blank">
-                click here to view the NYC Health Code Reference (PDF)
-            </a>.
-            </p>
-            </div>
-        </div>
+  <div class="chart-box">
+    <h3 class="chart-title">Violation Codes</h3>
+    <div class="chart-container-two">
+      <div class="responsive-plotly">
+        {{ violation_code|safe}}
+        <p style="text-align: center; font-size: 0.9rem">
+          To understand what each violation code means,
+          <a
+            href="https://www.nyc.gov/assets/doh/downloads/pdf/rii/blue-book.pdf"
+            target="_blank"
+          >
+            click here to view the NYC Health Code Reference (PDF) </a
+          >.
+        </p>
+      </div>
     </div>
+  </div>
 </div>
 
-<div style="height: 60px;"></div>
-
+<div style="height: 60px"></div>
 
 {% endblock %}
